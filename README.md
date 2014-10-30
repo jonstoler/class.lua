@@ -1,5 +1,7 @@
 # class.lua
 
+<img src="https://travis-ci.org/jonstoler/class.lua.svg" />
+
 Make lua Object-Oriented!
 
 	require "class"
