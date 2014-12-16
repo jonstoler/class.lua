@@ -97,7 +97,7 @@ end
 
 -- create an instance of an object with constructor parameters
 function Class:new(...)
-	obj = self:extend({})
+	local obj = self:extend({})
 	if obj.init then obj:init(...) end
 	return obj
 end
