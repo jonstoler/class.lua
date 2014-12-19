@@ -38,7 +38,7 @@ function Class:extend(obj)
 	-- allow for getters and setters
 	mt.__index = function(table, key)
 		local val = rawget(table._, key)
-		if val and type(val) == "table" and (val.get or val.value) then
+		if val and type(val) == "table" and (val.get ~= nil or val.value ~= nil) then
 			if val.get then
 				if type(val.get) == "function" then
 					return val.get(table, val.value)
@@ -55,7 +55,7 @@ function Class:extend(obj)
 
 	mt.__newindex = function(table, key, value)
 		local val = rawget(table._, key)
-		if val and type(val) == "table" and (val.set or val.value) then
+		if val and type(val) == "table" and (val.set ~= nil or val.value ~= nil) then
 			local v = value
 			if val.set then
 				if type(val.set) == "function" then
