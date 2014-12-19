@@ -67,7 +67,7 @@ describe("static getters", function()
 		}
 
 		assert.equal("static getter", A.static)
-		assert.equal("overridden getter", B.static)
+		assert.equal(B.static, "overridden getter")
 	end)
 end)
 
@@ -111,13 +111,21 @@ describe("static setters", function()
 			end
 		}
 
+		--[[
+		-- note: overriding static setters normally
+		-- turned out to be a huge pain, because
+		-- the new setter would call the old one,
+		-- removing the transparency of the setter.
+		--
+		-- here's the work-around (using rawset under the hood):
+		--]]
 		local B = A:extend()
-		B.static = {
+		B.set(B, "static", {
 			value = 1,
 			set = function(self, newVal, oldVal)
 				return newVal * oldVal
 			end
-		}
+		})
 
 		A.static = 2
 		B.static = 2

@@ -54,14 +54,6 @@ function Class:extend(obj)
 	end
 
 	mt.__newindex = function(table, key, value)
-		if type(value) == "table" and (value.value or value.get or value.set) then
-			-- dumb hack so we can override static setters
-			-- with a new setter without calling
-			-- the superclass setter
-			table._[key] = value
-			return
-		end
-
 		local val = rawget(table._, key)
 		if val and type(val) == "table" and (val.set or val.value) then
 			local v = value
@@ -88,10 +80,10 @@ end
 function Class:set(prop, value)
 	if not value and type(prop) == "table" then
 		for k, v in pairs(prop) do
-			self._[k] = v
+			rawset(self._, k, v)
 		end
 	else
-		self._[prop] = value
+		rawset(self._, prop, value)
 	end
 end
 
