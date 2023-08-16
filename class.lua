@@ -87,6 +87,24 @@ function Class:set(prop, value)
 	end
 end
 
+---perform operator overloading for an new object of a class
+---@param class table
+---@param obj table
+local function opOverload(class, obj)
+	local opKeys = {
+		"__mode", "__tostring", "__len", "__pairs", "__ipairs", "__gc", "__name", "__close", --Special Operators
+		"__unm", "__add", '__sub', "__mul", "__div", "__idiv", "__mod", "__pow", "__concat", --Mathematic Operators
+		"__eq", "__lt", "__le",                                                        --Equivalence Comparison Operators
+		"__band", "__bor", "__bxor", "__bnot", "__shl", "__shr"                        --Bitwise Operators
+	}
+	local objMt = getmetatable(obj)
+	for _, operator in pairs(opKeys) do
+		if class[operator] then
+			objMt[operator] = class[operator]
+		end
+	end
+end
+
 -- create an instance of an object with constructor parameters
 function Class:new(...)
 	local obj = self:extend({})
